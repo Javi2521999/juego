@@ -15,7 +15,7 @@ public class Game implements ActionListener {
 
     public int canvasWidth;
     public int boxSize;
-    private CanvasGame canvas;
+   // private CanvasGame canvas;
     private GuiGame gui;
     ConcurrentLinkedQueue<IGameObject> gObjs = new ConcurrentLinkedQueue<>();
     RidingHood_3 ridingHood;// = new RidingHood_3(new Position(0,0), 1, 1, gObjs);
@@ -33,9 +33,9 @@ public class Game implements ActionListener {
     int row, col;
     private GameConfig gameConfig = new GameConfig();
 
-    public Game(GuiGame gui, CanvasGame canvas, int canvasWidth, int boxSize) throws Exception{
+    public Game(GuiGame gui, int canvasWidth, int boxSize) throws Exception{
         this.gui = gui;
-        this.canvas = canvas;
+        //this.canvas = canvas;
         this.canvasWidth = canvasWidth;
         this.boxSize = boxSize;
         ridingHood = new RidingHood_3(new Position(0,0), 1, 1, gObjs);
@@ -62,9 +62,10 @@ public class Game implements ActionListener {
         this.gObjs = this.gameConfig.getgObjs();
         this.screenCounter = this.gameConfig.getLevel();
         this.roundCounter = this.gameConfig.getRound();
-        this.canvas.defaultViewFactory = this.gameConfig.getDefaultViewFactory();
+        this.gui.updateCanvasDefaultViewFactory(this.gameConfig.getDefaultViewFactory());
+        //canvas.defaultViewFactory = this.gameConfig.getDefaultViewFactory();
         this.tick = this.gameConfig.getTimerTick();
-        this.canvas.setSquareCoordinates(this.ridingHood.getPosition().getX(), this.ridingHood.getPosition().getY());
+        this.gui.setSquareCoordinates(this.ridingHood.getPosition().getX(), this.ridingHood.getPosition().getY()); //canvas.setSquareCoordinates(this.ridingHood.getPosition().getX(), this.ridingHood.getPosition().getY());
         this.gObjs.forEach(x -> {
             if(x instanceof Spider){
                 ((Spider) x).setRidingHood_3(this.ridingHood);
@@ -73,14 +74,14 @@ public class Game implements ActionListener {
             }
         });
     }
-
+//"cuando nos quedamos en mitad de una partida poder volver a cargarla". Actualiza el objeto gameconfig que es el que tiene el estado del la partida
     public void updateConfig(){
         this.gameConfig.setBoardWidth(this.canvasWidth);
         this.gameConfig.setAutomatic(this.ridingHood.automatic);
         this.gameConfig.setgObjs(this.gObjs);
         this.gameConfig.setLevel(this.screenCounter);
         this.gameConfig.setRound(this.roundCounter);
-        this.gameConfig.setDefaultViewFactory(this.canvas.defaultViewFactory);
+        this.gameConfig.setDefaultViewFactory(this.gui.getViewFactory());
         this.gameConfig.setTimerTick(this.tick);
     }
 
@@ -88,7 +89,7 @@ public class Game implements ActionListener {
         this.tecla = tecla;
     }
     public void update() {
-        this.canvas = this.gui.canvas;
+        //this.canvas = this.gui.canvas;
         this.canvasWidth = this.gui.CANVAS_WIDTH;
         this.boxSize = this.gui.boxSize;
         this.updateConfig();
@@ -152,10 +153,10 @@ public class Game implements ActionListener {
             }
 
         });
-        //asegurar que riddinghood esta en una buena posicion sobre el atablero
+        //mover riddingHood a la siguiente posicion dentro del tablero.
         ridingHood.moveToNextPosition();
         setInLimits();
-        canvas.setSquareCoordinates(ridingHood.getPosition().getX(), ridingHood.getPosition().getY());
+        this.gui.setSquareCoordinates(ridingHood.getPosition().getX(), ridingHood.getPosition().getY());
         int process = processCell();
         if (process == 1){
             screenCounter++;
@@ -181,7 +182,8 @@ public class Game implements ActionListener {
             loadNewBoard(screenCounter, roundCounter);
         }
         this.gui.updateInfo(ridingHood.toString());
-        this.canvas.drawGameItems(gObjs);
+        this.gui.drawGameItems(gObjs);
+        // this.canvas.drawGameItems(gObjs);
         this.gui.repaint();
         this.updateConfig();
     }
@@ -302,7 +304,7 @@ public class Game implements ActionListener {
     public void resetLevel() {
         this.stopGame();
         this.loadNewBoard(this.screenCounter, this.roundCounter);
-        this.canvas.drawGameItems(this.gObjs);
+        this.gui.drawGameItems(this.gObjs);
 
     }
     public void loadGame(ConcurrentLinkedQueue<IGameObject> gObjs){

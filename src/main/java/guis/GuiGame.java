@@ -137,7 +137,7 @@ public class GuiGame extends JFrame implements KeyListener, ActionListener {
         this.getContentPane().add(canvasFrame);
         this.getContentPane().add(pnControls, BorderLayout.SOUTH);
 
-        this.game = new Game(this, this.canvas, CANVAS_WIDTH, this.boxSize);
+        this.game = new Game(this, CANVAS_WIDTH, this.boxSize);
         this.setSize (CANVAS_WIDTH + 40, CANVAS_WIDTH + 160);
         this.setResizable(false);
         this.setLocationRelativeTo(null);
@@ -349,4 +349,18 @@ public class GuiGame extends JFrame implements KeyListener, ActionListener {
         }
         requestFocusInWindow();
     }
+    public void updateCanvasDefaultViewFactory(IViewFactory defaultViewFactory){
+        this.canvas.defaultViewFactory = defaultViewFactory;
+    }
+    public void setSquareCoordinates(int x, int y){
+        this.canvas.setSquareCoordinates(x,y);
+        
+    }
+    public IViewFactory getViewFactory(){
+        return this.canvas.defaultViewFactory;
+    } 
+    public void drawGameItems(ConcurrentLinkedQueue<IGameObject> gObjects){
+        this.canvas.drawGameItems(gObjects);
+    }
+            
 }

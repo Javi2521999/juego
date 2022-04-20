@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+//
 public class CanvasGame extends JPanel {
     int size, boxSize;
     int pX, pY;
