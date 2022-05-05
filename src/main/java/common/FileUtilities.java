@@ -5,7 +5,7 @@
  */
 package common;
 
-import game.Position;
+import game.objects.Position;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;

@@ -1,16 +1,14 @@
 package common;
 
-import game.Game;
-import game.GameConfig;
-import game.GameObjectsJSONFactory;
-import game.IGameObject;
+import game.config.GameConfig;
+import game.objects.GameObjectsJSONFactory;
+import game.objects.IGameObject;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class FileGameSaveLoad {

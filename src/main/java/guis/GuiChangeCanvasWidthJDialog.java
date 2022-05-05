@@ -37,7 +37,7 @@ public class GuiChangeCanvasWidthJDialog extends JDialog {
         this.applyButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                guiGameJFrame.setCanvasWidth((Integer)(widthSpinner.getValue()));
+                guiGameJFrame.updateCanvasWidth((Integer)(widthSpinner.getValue()));
                 setVisible(false);
 
             }
