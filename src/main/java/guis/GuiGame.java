@@ -23,10 +23,13 @@ import static common.Constantes.DEFAULT_PATH;
 
 public class GuiGame extends JFrame implements KeyListener, ActionListener {
     private JPanel canvasFrame, pnControls, pnButtons;
-    private JButton btClear, btStartStop;
+    //crear boton star stop y mio
+    private JButton btClear, btStartStop, btResetLvl;
     private JMenuBar menuBar;
     private JMenu menuFile, menuSettings, menuViews, menuMode;
+    //crea el menu para cambiar dimensiones
     private JMenuItem itSave, itLoad, itChangeWidth, itCustomSave, itCustomLoad;
+    //crear boton iconos y manual automatico
     private JCheckBoxMenuItem ckIcon, ckBoxes, ckGeo, ckAutomatic, ckManual;
     private JLabel dataLabel;
 
@@ -43,6 +46,9 @@ public class GuiGame extends JFrame implements KeyListener, ActionListener {
         this.dataLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         this.btClear = new JButton("Reset level");
+        //mio
+        this.btResetLvl= new JButton("Reset game");
+        //inicializa como se llamará el boton start
         this.btStartStop = new JButton("Start");
 
         this.menuBar = new JMenuBar();
@@ -54,13 +60,16 @@ public class GuiGame extends JFrame implements KeyListener, ActionListener {
         this.itLoad = new JMenuItem("Default load");
         this.itCustomSave = new JMenuItem("Custom save");
         this.itCustomLoad = new JMenuItem("Custom load");
+        //inicializa como se llamara el boton para cambiar las dimensiones
         this.itChangeWidth = new JMenuItem("Change width");
+        //inicializa como se llamara el boton para cambiar las vistas y añade cual será x defecto
         this.ckIcon = new JCheckBoxMenuItem("Icon view factory", false);
         this.ckBoxes = new JCheckBoxMenuItem("Boxes view factory", true);
         this.ckGeo = new JCheckBoxMenuItem("Geo view factory", false);
         this.ckAutomatic = new JCheckBoxMenuItem("Automatic", true);
         this.ckManual = new JCheckBoxMenuItem("Manual", false);
-
+        //para que al pulsarlo se ejecute
+        this.btResetLvl.addActionListener(this);
         this.btStartStop.addActionListener(this);
         this.btClear.addActionListener(this);
         this.itSave.addActionListener(this);
@@ -73,7 +82,7 @@ public class GuiGame extends JFrame implements KeyListener, ActionListener {
         this.ckGeo.addActionListener(this);
         this.ckAutomatic.addActionListener(this);
         this.ckManual.addActionListener(this);
-
+        //añade a cada menu sus submenus
         this.menuViews.add(ckBoxes);
         this.menuViews.add(ckGeo);
         this.menuViews.add(ckIcon);
@@ -100,6 +109,7 @@ public class GuiGame extends JFrame implements KeyListener, ActionListener {
         this.pnControls = new JPanel();
         this.pnControls.setLayout(new GridLayout(2,1));
         this.pnButtons = new JPanel();
+        this.pnButtons.add(btResetLvl);
         this.pnButtons.add(btStartStop);
         this.pnButtons.add(btClear);
         this.pnControls.add(dataLabel);
@@ -116,7 +126,7 @@ public class GuiGame extends JFrame implements KeyListener, ActionListener {
         this.setFocusable(true);
 
     }
-
+        //metodo para cambiar la dimension.
     public void updateCanvas() {
         this.setVisible(false);
         this.getContentPane().remove(this.canvasFrame);
@@ -127,7 +137,7 @@ public class GuiGame extends JFrame implements KeyListener, ActionListener {
         this.game.updateConfig();
         this.setVisible(true);
     }
-
+      //metodo para actualizar el cambio de dimension
     public void updateCanvasWidth(int width) {
         this.game.updateCanvasWidth(width);
         this.updateCanvas();
@@ -152,7 +162,7 @@ public class GuiGame extends JFrame implements KeyListener, ActionListener {
     @Override
     public void keyReleased(KeyEvent ke) {
     }
-
+    //
     private void setViewsControl(Boolean boxes, Boolean icon, Boolean geo, IViewFactory viewFactory) {
         this.ckBoxes.setState(boxes);
         this.ckIcon.setState(icon);
@@ -200,11 +210,22 @@ public class GuiGame extends JFrame implements KeyListener, ActionListener {
             this.ckManual.setState(true);
             this.ckAutomatic.setState(false);
             this.game.setAutomatic(false);
+        }else if(obj == btResetLvl){
+            this.loadNewConfig(FileGameSaveLoad.defaultLoadConfig(DEFAULT_PATH));
         }
+            
         this.game.updateConfig();
+        
         this.requestFocusInWindow();
     }
 
+    public void resetLvl() {
+        this.btResetLvl.setText("Start");
+        this.game.stopGame();
+        this.menuFile.setEnabled(true);
+        this.menuSettings.setEnabled(true);
+     
+    }
     public void stopGame() {
         this.btStartStop.setText("Start");
         this.game.stopGame();

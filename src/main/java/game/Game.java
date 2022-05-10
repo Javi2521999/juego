@@ -282,4 +282,6 @@ public class Game implements ActionListener {
         this.ridingHood.setLifes(this.ridingHoodResetLevel.getLifes());
         this.loadNewBoard();
     }
+     
+    
 }
